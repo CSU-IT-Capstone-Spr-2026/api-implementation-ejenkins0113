@@ -168,10 +168,12 @@
             </p>
             <!-- TODO: Add any buttons for navigation, random, or form to fetch comics -->
             <div class="navigation">
-                <a href="{{ url_for('random') }}" class="btn">
+                <a href="{{ url_for('random_comic') }}" class="btn">
                     🎲 Random Comic
                 </a>
             </div>
+        </div>
+        {% endif %}
     </main>
     <footer>
         <p>Comics from <a href="https://xkcd.com" target="_blank">xkcd.com</a> by Randall Munroe</p>

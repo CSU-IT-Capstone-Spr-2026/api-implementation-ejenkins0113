@@ -70,7 +70,7 @@ def show_comic(comic_num):
 # TODO: Add more routes here for the other features you choose to implement
 # Feature #3: Random Comic
 @app.route('/random')
-def random():
+def random_comic():
     # Fetch the latest comic to get the maximum comic number.
     latest = get_latest_comic()
     if not latest:
