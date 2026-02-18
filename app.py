@@ -3,6 +3,7 @@ XKCD Comic Viewer - Starter Code
 """
 from flask import Flask, render_template, request
 import requests
+import random
 
 app = Flask(__name__)
 
@@ -68,6 +69,24 @@ def show_comic(comic_num):
 
 # TODO: Add more routes here for the other features you choose to implement
 # Feature #3: Random Comic
+@app.route('/random')
+def random():
+    # Fetch the latest comic to get the maximum comic number.
+    latest = get_latest_comic()
+    if not latest:
+        return render_template('index.html', comic=None,
+                               error="Sorry, we couldn't fetch the latest comic.")
+    max_comic_num = latest['num']
+    
+    #Generate a random comic number.
+    random_num = random.randint(1, max_comic_num)
+    comic = get_comic_by_number(random_num)
+
+    if comic:
+        return render_template('index.html', comic=comic, error=None)
+    else:
+        return render_template('index.html', comic=None,
+                               error=f"Sorry, we couldn't fetch a random comic. Please try again.")
 # Feature #4: Navigation (Previous/Next)
 # Feature #5: Search Form
 # Feature #6: Display Multiple Recent Comics
