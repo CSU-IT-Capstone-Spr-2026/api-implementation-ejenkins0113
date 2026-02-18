@@ -88,6 +88,29 @@ def random_comic():
         return render_template('index.html', comic=None,
                                error=f"Sorry, we couldn't fetch a random comic. Please try again.")
 # Feature #4: Navigation (Previous/Next)
+@app.route('/comic/<int:comic_num>')
+def show_comic(comic_num):
+    if not latest:
+        return render_tmeplate('index.html', comic=None,
+                               error="Sorry, we couldn't fetch the latest comic.")
+    
+    max_num = latest["num"]
+
+    if comiic_num < 1 or comic_num > max_num:
+        return render_template('index.html', comic=None,
+                             error="Invalid comic number. Comics start at #1 and go up to #{max_num}.")
+    
+    comic = get_comic_by_number(comic_num)
+    if comic:
+        return render_template('index.html', comic=comic, error=None)
+    else:
+        return render_template('index.html', comic=None,
+                               error=f"Comic #{comic_num} could not be found. It may not exist.")    
+    
+    previous_num = comic_num - 1 if comic_num > 1 else None
+    next_num = comic_num + 1 if comic_num < max_num else None
+
+    return render_template('index.html', comic=comic, error=None, previous_num=previous_num, next_num=next_num)
 # Feature #5: Search Form
 # Feature #6: Display Multiple Recent Comics
 
