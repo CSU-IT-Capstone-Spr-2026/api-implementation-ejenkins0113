@@ -171,7 +171,18 @@
                 <a href="{{ url_for('random_comic') }}" class="btn">
                     🎲 Random Comic
                 </a>
+                {% if previous_num %}
+                <a href="{{ url_for('show_comic', comic_num=previous_num) }}" class="btn">
+                    ← Previous Comic
+                </a>
+                {% endif %}
+                {% if next_num %}
+                <a href="{{ url_for('show_comic', comic_num=next_num) }}" class="btn">
+                    Next Comic →
+                </a>
+                {% endif %}
             </div>
+            
         </div>
         {% endif %}
     </main>
