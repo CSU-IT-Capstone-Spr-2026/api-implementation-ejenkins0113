@@ -151,6 +151,11 @@
         </div>
         {% endif %}
 
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+
         {% if comic %}
         <!-- Display the comic if we successfully fetched it -->
         <div class="comic-container">
@@ -171,18 +176,14 @@
                 <a href="{{ url_for('random_comic') }}" class="btn">
                     🎲 Random Comic
                 </a>
-                {% if previous_num %}
-                <a href="{{ url_for('show_comic', comic_num=previous_num) }}" class="btn">
-                    ← Previous Comic
-                </a>
-                {% endif %}
-                {% if next_num %}
-                <a href="{{ url_for('show_comic', comic_num=next_num) }}" class="btn">
-                    Next Comic →
-                </a>
-                {% endif %}
             </div>
-            
+
+            <div class = search-form>
+                <form action="{{ url_for('search_comic') }}" method="get">
+                    <input type="text" name="query" placeholder="Search comics by title or alt text..." required>
+                    <button type="submit" class="btn">🔍 Search</button>
+                </form>
+            </div>    
         </div>
         {% endif %}
     </main>

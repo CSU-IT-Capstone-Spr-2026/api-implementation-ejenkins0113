@@ -52,7 +52,7 @@ def index():
                              error="Sorry, we couldn't fetch the comic right now. Please try again later.")
 
 
-@app.route('/comic/<int:comic_num>')
+@app.route('/comic-old/<int:comic_num>')
 def show_comic(comic_num):
     # Display a specific comic by number. Use this as a reference for implementing other features. example websiteUrl.com/comic/234
     # Validate comic number will pull back a comic
@@ -88,30 +88,30 @@ def random_comic():
         return render_template('index.html', comic=None,
                                error=f"Sorry, we couldn't fetch a random comic. Please try again.")
 # Feature #4: Navigation (Previous/Next)
-@app.route('/comic/<int:comic_num>')
-def show_comic(comic_num):
-    if not latest:
-        return render_tmeplate('index.html', comic=None,
-                               error="Sorry, we couldn't fetch the latest comic.")
-    
-    max_num = latest["num"]
-
-    if comiic_num < 1 or comic_num > max_num:
-        return render_template('index.html', comic=None,
-                             error="Invalid comic number. Comics start at #1 and go up to #{max_num}.")
-    
-    comic = get_comic_by_number(comic_num)
-    if comic:
-        return render_template('index.html', comic=comic, error=None)
-    else:
-        return render_template('index.html', comic=None,
-                               error=f"Comic #{comic_num} could not be found. It may not exist.")    
-    
-    previous_num = comic_num - 1 if comic_num > 1 else None
-    next_num = comic_num + 1 if comic_num < max_num else None
-
-    return render_template('index.html', comic=comic, error=None, previous_num=previous_num, next_num=next_num)
 # Feature #5: Search Form
+@app.route('/search', methods=['POST'])
+def search_comic():
+    comic_number = request.form.get('comic_number')
+
+    # Validate input
+    if not comic_number.isdigit():
+        return render_template("index.html", error="Please enter a valid number.")
+
+    comic_number = int(comic_number)
+
+    if comic_number < 1:
+        return render_template("index.html", error="Comic numbers start at 1.")
+
+    url = f"https://xkcd.com/{comic_number}/info.0.json"
+    response = requests.get(url)
+
+    if response.status_code == 404:
+        return render_template("index.html", error="Comic not found.")
+
+    comic = response.json()
+
+    return render_template("index.html", comic=comic)
+
 # Feature #6: Display Multiple Recent Comics
 
 # Run the Flask development server
